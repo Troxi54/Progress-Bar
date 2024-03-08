@@ -1,0 +1,85 @@
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <title>Progress Bar</title>
+
+    <script src="js/bignumber.js-master/bignumber.js"></script>
+    <script src="js/bignumber.js-master/MoreBNFunctions.js"></script>
+    <script src="js/Everything.js"></script>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <p id="next" style="color: white;">Hello there!</p>
+        <div style="width: 50%; left: 25%; top: 30%;">
+            <p id="level_number"></p>
+        </div>
+        
+        <div class="bar" id="level">
+            <div class="bar_in" id="level_in"></div>
+            <p id="level_text"></p>
+        </div>
+        <div id="holder_div">
+            <p id="holder_info"><span style="font-size: 50px;">Holder</span><br><br>Hold it to<br>decrease time<br>to next level</p>
+        </div>
+        <div id="holder_upg1_div" class="holder_upgrade" style="left: 40%;">
+            <p id="holder_upg1" style="white-space: prewrap; font-size: .60em;"></p>
+        </div>
+        <div id="holder_upg2_div" class="holder_upgrade" style="left: 60%;">
+            <p id="holder_upg2" style="white-space: prewrap; font-size: .60em;"></p>
+        </div>
+        <div style="overflow:visible; width: 329px; aspect-ratio: 5 / 3; left: 5%; top: 20%;">
+            <p id="prestige_number"></p>
+            <div id="prestige_div">
+                <p id="prestige_info"></p>
+            </div>
+            <div id="prestige_upgrades_div" style="top: 150%; ">
+                <p style="font-size: 100%; position: absolute; top: 0%; color: rgb(130, 0, 0)"><span style="font-size: 150%">Prestige Upgrades</span><br><span style="color: rgb(50, 0, 0)">they don't take PP</span></p>
+                <div id="prestige_upgrade1" class="prestige_upgrade" style="top: 50%; left: 25%">
+                    <p id="prestige_upgrade_text1" class="prestige_upgrade_text"></p>
+                </div>
+                <div id="prestige_upgrade2" class="prestige_upgrade" style="top: 50%; left: 75%">
+                    <p id="prestige_upgrade_text2" class="prestige_upgrade_text"></p>
+                </div>
+                <div id="prestige_upgrade3" class="prestige_upgrade" style="top: 82.5%; left: 25%">
+                    <p id="prestige_upgrade_text3" class="prestige_upgrade_text"></p>
+                </div>
+                <div id="prestige_upgrade4" class="prestige_upgrade" style="top: 82.5%; left: 75%">
+                    <p id="prestige_upgrade_text4" class="prestige_upgrade_text"></p>
+                </div>
+            </div>
+            
+        </div>
+        <div style="overflow:visible; width: 329px; aspect-ratio: 5 / 3; left: calc(95% - 329px); top: 20%;">
+            <p id="sacrifice_number"></p>
+            <div id="sacrifice_div">
+                <p id="sacrifice_info"></p>
+            </div>
+            <div id="sacrifice_milestones_div" style="top: 150%">
+                <div style="width: 100%; height: 100%; overflow-y: scroll; display: block;">
+                    <div class="sacrifice_milestone_div" id="smd1" style="border-top: 0px">
+                    <p class="sacrifice_milestone_text" id="smt1"></p>
+                    </div>
+                    <div class="sacrifice_milestone_div" id="smd2">
+                        <p class="sacrifice_milestone_text" id="smt2"></p>
+                    </div>
+                    <div class="sacrifice_milestone_div" id="smd3">
+                        <p class="sacrifice_milestone_text" id="smt3"></p>
+                    </div>
+                    <div class="sacrifice_milestone_div" id="smd4">
+                        <p class="sacrifice_milestone_text" id="smt4"></p>
+                    </div>
+                    <div class="sacrifice_milestone_div" id="smd5">
+                        <p class="sacrifice_milestone_text" id="smt5"></p>
+                    </div>
+                    <div class="sacrifice_milestone_div" id="smd6">
+                        <p class="sacrifice_milestone_text" id="smt6"></p>
+                    </div>
+                    <div class="sacrifice_milestone_div" id="smd7" style="border-bottom: 0px">
+                        <p class="sacrifice_milestone_text" id="smt7"></p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </body>
+</html>

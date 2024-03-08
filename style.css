@@ -1,0 +1,248 @@
+* {
+    background-color: black;
+    font-family: sans-serif;
+    text-align: center;
+    user-select: none;
+}
+
+p {
+    white-space: nowrap;
+    background-color: transparent;
+    color: rgb(130, 130, 130);
+}
+
+span {
+    background-color: transparent;
+}
+
+p.center {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+div {
+    text-align: center;
+    overflow: hidden;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.bar {
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+    width: 564px;
+    aspect-ratio: 8 / 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+div.bar_in {
+    left: -1px;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    width: 0px;
+    height: 100%;
+    transition: none;
+}
+
+p#level_text
+{
+    font-size: 30px;
+    z-index: 1;
+}
+
+p#level_number
+{
+    font-size: 50px;
+    color: white;
+    top: 30%;
+}
+
+div#holder_div
+{
+    width: 244px;
+    aspect-ratio: 1 / 1;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid white;
+    border-radius: 20px;
+    transition: 100ms linear;
+    transition-property: background-color;
+    display: none;
+}
+
+div#holder_div:hover,
+div.holder_upgrade:hover
+{
+    background-color: rgb(50, 50, 50);
+}
+div#holder_div:active,
+div.holder_upgrade:active
+{
+    background-color: rgb(255, 255, 255);
+}
+p#holder_info
+{
+    white-space: wrap;
+    font-size: 20px;
+}
+
+div.holder_upgrade
+{
+    width: 94px;
+    aspect-ratio: 1 / 1;
+    top: 75%;
+    transform: translate(-50%, -50%);
+    border: 2px solid white;
+    border-radius: 15px;
+    transition: 100ms linear;
+    transition-property: background-color;
+    display: none;
+}
+
+div#prestige_div
+{
+    width: 100%;
+    aspect-ratio: 5 / 3;
+    transform: translateY(-50%);
+    border: 2px solid red;
+    border-radius: 15px;
+    transition: 100ms linear;
+    transition-property: background-color;
+    display: none;
+}
+div#prestige_div:hover,
+div.prestige_upgrade:hover
+{
+    background-color: rgb(50, 0, 0);
+}
+div#prestige_div:active,
+div.prestige_upgrade:active
+{
+    background-color: rgb(255, 0, 0);
+}
+
+p#prestige_info
+{
+    font-size: 15px;
+    color: rgb(130, 0, 0);
+}
+
+p#prestige_number
+{
+    position: absolute;
+    font-size: 25px;
+    color: rgb(255, 0, 0);
+    top: -90%;
+}
+
+div.prestige_upgrade
+{
+    position: absolute;
+    width: 94px;
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgb(255, 0, 0);
+    border-radius: 15px;
+    transition: 100ms linear;
+    transition-property: background-color;
+}
+p.prestige_upgrade_text
+{
+    font-size: .60em;
+    color:rgb(130, 0, 0);
+}
+div#prestige_upgrades_div
+{
+    width: 235px;
+    aspect-ratio: 1 / 1.5;
+    transform: translateY(-50%);
+    border: 2px solid red;
+    border-radius: 15px;
+    display: none;
+}
+
+div#sacrifice_div
+{
+    width: 100%;
+    aspect-ratio: 5 / 3;
+    transform: translateY(-50%);
+    border: 2px solid rgb(127, 0, 255);
+    border-radius: 15px;
+    transition: 100ms linear;
+    transition-property: background-color;
+    display: none;
+}
+div#sacrifice_div:hover,
+div.sacrifice_milestone_div:hover
+{
+    background-color: rgb(25, 0, 50);
+}
+div#sacrifice_div:active
+{
+    background-color: rgb(127, 0, 255);
+}
+p#sacrifice_info
+{
+    font-size: 15px;
+    color: rgb(65, 0, 130);
+}
+p#sacrifice_number
+{
+    position: absolute;
+    font-size: 25px;
+    color: rgb(127, 0, 255);
+    top: -90%;
+}
+div#sacrifice_milestones_div
+{
+    width: 235px;
+    aspect-ratio: 1 / 1.5;
+    transform: translateY(-50%);
+    border: 2px solid rgb(127, 0, 255);
+    border-radius: 15px;
+    overflow: hidden;
+    display: none;
+}
+
+::-webkit-scrollbar {
+    background: transparent;
+    border-left: 2px solid rgb(127, 0, 255);
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(127, 0, 255);
+    
+}
+
+div.sacrifice_milestone_div
+{
+    width: 100%;
+    aspect-ratio: 5 / 3;
+    border: 2px solid rgb(127, 0, 255);
+    border-left: 0px;
+    border-right: 0px;
+    position: static;
+    transition: 100ms linear;
+    transition-property: background-color;
+}
+
+p.sacrifice_milestone_text
+{
+    font-size: 15px;
+    color: rgb(65, 0, 130);
+    white-space: wrap;
+}
+
+
+.notransition
+{
+    transition: none !important;
+}
