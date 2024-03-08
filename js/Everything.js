@@ -660,13 +660,24 @@ document.addEventListener("DOMContentLoaded", function() {
             events.isHolderHeld = true;
         }
     })
+    elements.holder_div.addEventListener("touchstart", function() 
+    { 
+        if (getComputedStyle(elements.holder_div).display != "none")
+        { 
+            events.isHolderHeld = true;
+        }
+    })
     elements.holder_div.addEventListener("mouseup", function() 
     { 
-        events.isHolderHeld = false 
+        events.isHolderHeld = false;
+    })
+    elements.holder_div.addEventListener("touchend", function() 
+    { 
+        events.isHolderHeld = false;
     })
     elements.holder_div.addEventListener("mouseleave", function() 
     { 
-        events.isHolderHeld = false 
+        events.isHolderHeld = false;
     })
     //document.addEventListener("focusout", function() { events.isHolderHeld = false; })
 
