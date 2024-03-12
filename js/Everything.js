@@ -70,7 +70,7 @@ let player = {
 }
 
 const player_nosave = {
-    xp_multiplier: BigNumber('1e50'),
+    xp_multiplier: BigNumber('1e0'),
     level_exp: BigNumber(''),
     setLevel(num) { player.level = num; currencies.setXpToNextLevel(); },
     xp_var: BigNumber(''),
@@ -834,8 +834,6 @@ document.addEventListener("DOMContentLoaded", function() {
     {
         
     }).observe(elements.level_in);
-
-    console.log(currencies.getSacrificeRequirement());
 
     function update()
     {
