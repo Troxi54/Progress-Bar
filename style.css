@@ -15,11 +15,6 @@ span {
     background-color: transparent;
 }
 
-p.center {
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 div {
     text-align: center;
     overflow: hidden;
@@ -69,7 +64,7 @@ div#holder_div
 {
     width: 244px;
     aspect-ratio: 1 / 1;
-    top: 75%;
+    top: calc(50% + 231px);
     left: 50%;
     transform: translate(-50%, -50%);
     border: 2px solid white;
@@ -100,7 +95,7 @@ div.holder_upgrade
 {
     width: 94px;
     aspect-ratio: 1 / 1;
-    top: 75%;
+    top: calc(50% + 231px);
     transform: translate(-50%, -50%);
     border: 2px solid white;
     border-radius: 15px;
