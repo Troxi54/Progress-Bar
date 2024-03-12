@@ -6,12 +6,13 @@ BigNumber.set({ EXPONENTIAL_AT: 0})
 let elements;
 
 const setting = {
+    save: true,
     auto_save: 10,
-    update_time_s: BigNumber('5e-2'),
+    update_time_s: BigNumber('1e-0'),
     to_exp: BigNumber('1e50'),
-    pp_i: .25,
-    hu_i: .5,
-    ppu_i: .5,
+    pp_i: .1,
+    hu_i: .25,
+    ppu_i: .25,
 }
 
 const levels = [
@@ -32,57 +33,27 @@ const consts = {
 }
 
 let player = {
-    level: BigNumber('0e0'), level_exp: BigNumber(''),
+    level: BigNumber('0e0'), 
     xp: BigNumber('0e0'),
-    xp_multiplier: BigNumber('1e0'),
-
     
-    levels_: levels.map(object => ({ ...object })),
-
     holder_progress: BigNumber('1e0'),
-    holder_progress_multiplier: BigNumber('1e0'),
     holder_base: BigNumber('1e1'),
 
     upg1_tm: BigNumber('0e0'),
     upg1_effect: BigNumber('1.5e0'),
-    upg1_start_cost: consts.holder_upgrades,
-    upg1_cost_scale: BigNumber('5e0'),
 
     upg2_tm: BigNumber('0e0'),
     upg2_effect: BigNumber('1e0'),
-    upg2_start_cost: consts.holder_upgrades,
-    upg2_cost_scale: BigNumber('5e0'),
 
     prestige_points: BigNumber('0e0'),
-    prestige_points_multiplier: BigNumber('1e0'),
     prestige_upgrades_unlocked: false,
 
     pupg1_tm: BigNumber('0e0'),
-    pupg1_effect: BigNumber('1e0'),
-    pupg1_start_cost: BigNumber('2.5e4'),
-    pupg1_cost_scale: BigNumber('1e1'),
-
     pupg2_tm: BigNumber('0e0'),
-    pupg2_effect: BigNumber('2e0'),
-    pupg2_start_cost: BigNumber('1e4'),
-    pupg2_cost_scale: BigNumber('5e0'),
-
     pupg3_ib: false,
-    pupg3_cost: BigNumber('1.5e4'),
-
     pupg4_ib: false,
-    pupg4_cost: BigNumber('5e4'),
-
+    
     sacrifice: BigNumber('0e0'),
-    sacrifice_scale: BigNumber('2.5e1'),
-
-    sm1_effect: BigNumber('2e0'),
-    sm2_effect: BigNumber('3e0'),
-    sm3_effect: BigNumber('2e0'),
-    sm4_effect: BigNumber('1.5e2'),
-    sm5_effect: BigNumber('5e-2'),
-    sm6_effect: BigNumber('2e0'),
-    sm7_effect: BigNumber('1.1e0'),
 
     holder_unlocked: false,
     holder_upgrades_unlocked: false,
@@ -98,6 +69,48 @@ let player = {
     last_save: Date.now(),
 }
 
+const player_nosave = {
+    xp_multiplier: BigNumber('1e50'),
+    level_exp: BigNumber(''),
+    setLevel(num) { player.level = num; currencies.setXpToNextLevel(); },
+    xp_var: BigNumber(''),
+    updateXp() { this.xp_var = currencies.getXp(); },
+
+    levels_: levels.map(object => ({ ...object })),
+
+    holder_progress_multiplier: BigNumber('1e0'),
+
+    upg1_start_cost: consts.holder_upgrades,
+    upg1_cost_scale: BigNumber('5e0'),
+
+    upg2_start_cost: consts.holder_upgrades,
+    upg2_cost_scale: BigNumber('5e0'),
+
+    prestige_points_multiplier: BigNumber('1e0'),
+
+    pupg1_effect: BigNumber('1e0'),
+    pupg1_start_cost: BigNumber('2.5e4'),
+    pupg1_cost_scale: BigNumber('1e1'),
+
+    pupg2_effect: BigNumber('2e0'),
+    pupg2_start_cost: BigNumber('1e4'),
+    pupg2_cost_scale: BigNumber('5e0'),
+
+    pupg3_cost: BigNumber('1.5e4'),
+    pupg4_cost: BigNumber('5e4'),
+    sacrifice_scale: BigNumber('2.5e1'),
+
+    sm1_effect: BigNumber('2e0'),
+    sm2_effect: BigNumber('3e0'),
+    sm3_effect: BigNumber('2e0'),
+    sm4_effect: BigNumber('1.5e2'),
+    sm5_effect: BigNumber('5e-2'),
+    sm6_effect: BigNumber('2e0'),
+    sm7_effect: BigNumber('1.1e0'),
+
+    lastLoop: Date.now()
+}
+
 
 
 
@@ -107,8 +120,8 @@ const currencies = {
     getXp()
     {
         return BigNumber('1e1')
-        .times(setting.update_time_s)
-        .times(player.xp_multiplier)
+        .times(intervalS())
+        .times(player_nosave.xp_multiplier)
         .times(this.getHolderEffect())
         .times(this.getHolderUpgrade1Effect())
         .times(this.getPrestigeBoost())
@@ -117,60 +130,60 @@ const currencies = {
     setXpToNextLevel(level = player.level)
     {
         let scale = BigNumber('1e0');
-        for (i = 0; i < player.levels_.length; ++i)
+        for (i = 0; i < player_nosave.levels_.length; ++i)
         {
             let dont = false;
-            if (i + 1 >= player.levels_.length) dont =! dont; 
-            else if (!level.gte(player.levels_[i + 1][1])) dont =! dont;
+            if (i + 1 >= player_nosave.levels_.length) dont =! dont; 
+            else if (!level.gte(player_nosave.levels_[i + 1][1])) dont =! dont;
 
             if (!dont)
             {
-                scale = scale.times(player.levels_[i][2].topow(player.levels_[i + 1][1].minus(player.levels_[i][1])));
+                scale = scale.times(player_nosave.levels_[i][2].topow(player_nosave.levels_[i + 1][1].minus(player_nosave.levels_[i][1])));
             }
             else 
             {
-                scale = scale.times(player.levels_[i][2].topow(level.minus(player.levels_[i][1])));
+                scale = scale.times(player_nosave.levels_[i][2].topow(level.minus(player_nosave.levels_[i][1])));
                 break;
             }
         }
-        player.level_exp = BigNumber('1e1').times(scale);
-        return player.level_exp;
+        player_nosave.level_exp = BigNumber('1e1').times(scale);
+        return player_nosave.level_exp;
     },
     setLevels()
     {
-        player.levels_ = levels.map(object => ({ ...object })); // what the hell, why in javascript no pointers or/and references like in C++
+        player_nosave.levels_ = levels.map(object => ({ ...object })); // what the hell, why in javascript no pointers or/and references like in C++
 
-        var later = player.upg2_tm;
-        for (let i = 1; i < player.levels_.length; ++i)
+        let later = player.upg2_tm;
+        for (let i = 1; i < player_nosave.levels_.length; ++i)
         {
             if (later.eq(BigNumber('0e0'))) { break; }
-            if (i + 1 < player.levels_.length)
+            if (i + 1 < player_nosave.levels_.length)
             {
-                if (later.lt(player.levels_[i + 1][1].minus(player.levels_[i][1])))
+                if (later.lt(player_nosave.levels_[i + 1][1].minus(player_nosave.levels_[i][1])))
                 {
-                    player.levels_[i][1] = player.levels_[i][1].plus(later);
+                    player_nosave.levels_[i][1] = player_nosave.levels_[i][1].plus(later);
                     later = BigNumber('0e0');
                 }
                 else
                 {
-                    later = later.minus(player.levels_[i + 1][1].minus(player.levels_[i][1]));
-                    player.levels_[i][1] = player.levels_[i][1].plus(player.levels_[i + 1][1].minus(player.levels_[i][1]));
+                    later = later.minus(player_nosave.levels_[i + 1][1].minus(player_nosave.levels_[i][1]));
+                    player_nosave.levels_[i][1] = player_nosave.levels_[i][1].plus(player_nosave.levels_[i + 1][1].minus(player_nosave.levels_[i][1]));
                 }
             }
             else
             {
-                player.levels_[i][1] = player.levels_[i][1].plus(later);
+                player_nosave.levels_[i][1] = player_nosave.levels_[i][1].plus(later);
                 later = BigNumber('0e0');
             }
         }
     },
     getTimeToNextLevel()
     {
-        return player.level_exp.div(this.getXp()).times(setting.update_time_s);
+        return player_nosave.level_exp.div(player_nosave.xp_var).times(intervalS());
     },
     getTimeToNextLevelRemain()
     {
-        return this.getTimeToNextLevel().minus( this.getTimeToNextLevel().times(player.xp).div(player.level_exp) );
+        return this.getTimeToNextLevel().minus( this.getTimeToNextLevel().times(player.xp).div(player_nosave.level_exp) );
     },
     getHolderBase()
     {
@@ -179,21 +192,21 @@ const currencies = {
     },
     getHolderProgress()
     {
-        return player.holder_progress_multiplier.times(setting.update_time_s);
+        return player_nosave.holder_progress_multiplier.times(intervalS());
     },
     getHolderEffect()
     {
         return this.getHolderBase().topow(player.holder_progress.topow(this.getHolderBase().topow(BigNumber('2e0')).log(BigNumber('1e1'))).log(BigNumber('1e1')))
-        .topow(player.sacrifice.ge(sm_requirements[0]) ? player.sm1_effect : BigNumber('1e0'));
+        .topow(player.sacrifice.ge(sm_requirements[0]) ? player_nosave.sm1_effect : BigNumber('1e0'));
     },
     getHolderUpgrade1Cost(times = BigNumber('0e0'))
     {
         if (times.gt(BigNumber('0e0'))) times = times.minus(BigNumber('1e0'));
-        return player.upg1_start_cost.plus(player.upg1_cost_scale.times(player.upg1_tm.plus(times)));
+        return player_nosave.upg1_start_cost.plus(player_nosave.upg1_cost_scale.times(player.upg1_tm.plus(times)));
     },
     getHolderUpgrade1Effect2()
     {
-        return (player.sacrifice.lt(sm_requirements[5]) ? player.upg1_effect : player.sm6_effect);
+        return (player.sacrifice.lt(sm_requirements[5]) ? player.upg1_effect : player_nosave.sm6_effect);
     },
     getHolderUpgrade1Effect()
     {
@@ -202,7 +215,7 @@ const currencies = {
     getHolderUpgrade2Cost(times = BigNumber('0e0'))
     {
         if (times.gt(BigNumber('0e0'))) times = times.minus(BigNumber('1e0'));
-        return player.upg2_start_cost.plus(player.upg2_cost_scale.times(player.upg2_tm.plus(times)));
+        return player_nosave.upg2_start_cost.plus(player_nosave.upg2_cost_scale.times(player.upg2_tm.plus(times)));
     },
     getHolderUpgrade2Effect()
     {
@@ -213,55 +226,55 @@ const currencies = {
         return BigNumber.max(player.level.minus(consts.prestige).plus(BigNumber('1e0')), BigNumber('0e0')).topow(player.level.log(BigNumber('1e1')))
         .times(this.getPrestigeUpgrade2Effect())
         .times(this.getSM2Effect())
-        .topow(player.sacrifice.ge(sm_requirements[6]) ? player.sm7_effect : BigNumber('1e0'))
-        .times(player.prestige_points_multiplier);
+        .topow(player.sacrifice.ge(sm_requirements[6]) ? player_nosave.sm7_effect : BigNumber('1e0'))
+        .times(player_nosave.prestige_points_multiplier);
     },
     getPrestigeBoost()
     {
         return player.prestige_points.plus(BigNumber('1e0')).topow(BigNumber('1.5e0'))
-        .topow(player.sacrifice.ge(sm_requirements[2]) ? player.sm3_effect : BigNumber('1e0'));
+        .topow(player.sacrifice.ge(sm_requirements[2]) ? player_nosave.sm3_effect : BigNumber('1e0'));
     },
     getPrestigeUpgrade1Cost(times = BigNumber('0e0'))
     {
         if (times.gt(BigNumber('0e0'))) times = times.minus(BigNumber('1e0'));
-        return player.pupg1_start_cost.times(player.pupg1_cost_scale.topow(player.pupg1_tm.plus(times)));
+        return player_nosave.pupg1_start_cost.times(player_nosave.pupg1_cost_scale.topow(player.pupg1_tm.plus(times)));
     },
     getPrestigeUpgrade1Effect()
     {
-        return player.pupg1_effect.times(player.pupg1_tm);
+        return player_nosave.pupg1_effect.times(player.pupg1_tm);
     },
     getPrestigeUpgrade2Cost(times = BigNumber('0e0'))
     {
         if (times.gt(BigNumber('0e0'))) times = times.minus(BigNumber('1e0'));
-        return player.pupg2_start_cost.times(player.pupg2_cost_scale.topow(player.pupg2_tm.plus(times)));
+        return player_nosave.pupg2_start_cost.times(player_nosave.pupg2_cost_scale.topow(player.pupg2_tm.plus(times)));
     },
     getPrestigeUpgrade2Effect()
     {
-        return player.pupg2_effect.topow(player.pupg2_tm);
+        return player_nosave.pupg2_effect.topow(player.pupg2_tm);
     },
     getPrestigeUpgrade3Cost()
     {
-        return player.pupg3_cost;
+        return player_nosave.pupg3_cost;
     },
     getPrestigeUpgrade4Cost()
     {
-        return player.pupg4_cost;
+        return player_nosave.pupg4_cost;
     },
     getSacrificeRequirement()
     {
-        return consts.sacrifice.plus(player.sacrifice_scale.times(player.sacrifice.times(player.sacrifice.log(BigNumber('1e1')).plus(BigNumber('1e0')))));
+        return consts.sacrifice.plus(player_nosave.sacrifice_scale.times(player.sacrifice.times(player.sacrifice.log(BigNumber('1e1')).plus(BigNumber('1e0'))))).floor();
     },
     getSM2Effect()
     {
-        return player.sm2_effect.topow(player.sacrifice);
+        return player_nosave.sm2_effect.topow(player.sacrifice);
     },
     getSM4Effect()
     {
-        return player.sm4_effect.topow(player.sacrifice.minus(sm_requirements[3].minus(BigNumber('1e0'))));
+        return player_nosave.sm4_effect.topow(player.sacrifice.minus(sm_requirements[3].minus(BigNumber('1e0'))));
     },
     getSM5Effect()
     {
-        return BigNumber('1e0').plus(player.sm5_effect.times(player.sacrifice));
+        return BigNumber('1e0').plus(player_nosave.sm5_effect.times(player.sacrifice));
     }
 }
 
@@ -275,9 +288,8 @@ const resets = {
 
             if (player.sacrifice.lt(sm_requirements[1]))
             {
-                player.level = BigNumber('0e0');
+                player_nosave.setLevel(BigNumber('0e0'));
                 player.xp = BigNumber('0e0');
-                currencies.setXpToNextLevel();
             }
             
             
@@ -292,6 +304,7 @@ const resets = {
                 currencies.setLevels();
             }
             
+            player_nosave.updateXp();
 
             updates.updateLevelNumberText();
             updates.updateLevelText();
@@ -307,11 +320,10 @@ const resets = {
         if (getComputedStyle(elements.sacrifice_div).display != "none")
         {
             player.sacrifice_done = true;
-
             
             if (player.sacrifice.lt(sm_requirements[4])) player.prestige_points = BigNumber('0e0');
 
-            player.level = BigNumber('0e0');
+            player_nosave.setLevel(BigNumber('0e0'));
             player.xp = BigNumber('0e0');
             currencies.setXpToNextLevel();
 
@@ -333,6 +345,8 @@ const resets = {
             if (player.sacrifice.lt(sm_requirements[2])) player.pupg3_ib = false;
 
             player.sacrifice = player.sacrifice.plus(BigNumber('1e0'));
+
+            player_nosave.updateXp();
 
             updates.updateLevelNumberText();
             updates.updateLevelText();
@@ -396,19 +410,19 @@ const updates = {
     },
     updateLevelText()
     {
-        var xp = currencies.getXp().times(BigNumber('1e-1').div(setting.update_time_s));
-        elements.level_text.innerHTML = round(Math.max(Math.min(player.xp.div(player.level_exp).times(BigNumber('1e2')).toNumber(), 100), 0), 1) + "% | "
+        let xp = player_nosave.xp_var.times(BigNumber('1e-1').div(setting.update_time_s));
+        elements.level_text.innerHTML = round(Math.max(Math.min(player.xp.div(player_nosave.level_exp).times(BigNumber('1e2')).toNumber(), 100), 0), 1) + "% | "
                                       + abb(BigNumber.max(currencies.getTimeToNextLevelRemain(), BigNumber('0e0')), 1) + " seconds" 
-                                      + ((!xp.eq(BigNumber('1e0')) ? " (" + abb(xp, 2) + "x)" : ""));
+                                      + ((!xp.eq(BigNumber('1e0')) ? " (" + abb(xp.div(intervalS())) + "x)" : ""));
     },
     updateLevelNumberText()
     {
         let scale = "";
         for (i = 0; i < levels.length; ++i)
         {
-            if (player.level.gte(player.levels_[i][1]))
+            if (player.level.gte(player_nosave.levels_[i][1]))
             {
-                scale = player.levels_[i][0];
+                scale = player_nosave.levels_[i][0];
             }
         }
         elements.level_number.innerHTML = scale + " Level " + abb(player.level, 2, false);
@@ -420,7 +434,7 @@ const updates = {
     },
     updateHolderUpg2()
     {
-        var scale_name;
+        let scale_name;
         for (let i = 1; i < levels.length; ++i) { if (player.upg2_tm.plus(levels[1][1]).ge(levels[i][1])) { scale_name = levels[i][0]; } }
         elements.holder_upg2.innerHTML = 
         "<span style='font-size: 175%;'>Upgrade 2</span><br><br>" + scale_name + " level<br>starts " + abb(player.upg2_effect, undefined, false) 
@@ -438,12 +452,12 @@ const updates = {
     },
     updatePrestigeUpgrade1()
     {
-        elements.prestige_upgrade_text1.innerHTML = "<span style='font-size: 175%;'>Upgrade 1</span><br><br>+" + abb(player.pupg1_effect, undefined, false) + " to the base<br>of holder formula<br>"
+        elements.prestige_upgrade_text1.innerHTML = "<span style='font-size: 175%;'>Upgrade 1</span><br><br>+" + abb(player_nosave.pupg1_effect, undefined, false) + " to the base<br>of holder formula<br>"
         + "Required: " + abb(currencies.getPrestigeUpgrade1Cost()) + " PP";
     },
     updatePrestigeUpgrade2()
     {
-        elements.prestige_upgrade_text2.innerHTML = "<span style='font-size: 175%;'>Upgrade 2</span><br><br>" + abb(player.pupg2_effect, undefined, false) + "x prestige points<br>"
+        elements.prestige_upgrade_text2.innerHTML = "<span style='font-size: 175%;'>Upgrade 2</span><br><br>" + abb(player_nosave.pupg2_effect, undefined, false) + "x prestige points<br>"
         + "Required: " + abb(currencies.getPrestigeUpgrade2Cost()) + " PP";
     },
     updatePrestigeUpgrade3()
@@ -474,7 +488,7 @@ const updates = {
     },
     updateSM2()
     {
-        elements.smt2.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[1]) +"</span><br><br>" + abb(player.sm2_effect) + "x PP per sacrifice and prestige no longer reset level";
+        elements.smt2.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[1]) +"</span><br><br>" + abb(player_nosave.sm2_effect) + "x PP per sacrifice and prestige no longer reset level";
     },
     updateSM3()
     {
@@ -482,19 +496,19 @@ const updates = {
     },
     updateSM4()
     {
-        elements.smt4.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[3]) +"</span><br><br>1/" + abb(player.sm4_effect) + "x time per sacrifice start at this and automatically<br>do prestige every " + setting.pp_i + "s.";
+        elements.smt4.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[3]) +"</span><br><br>1/" + abb(player_nosave.sm4_effect) + "x time per sacrifice start at this and automatically<br>do prestige every " + setting.pp_i + "s.";
     },
     updateSM5()
     {
-        elements.smt5.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[4]) +"</span><br><br>^(1 + sacrifice / " + abb(BigNumber('1e0').div(player.sm5_effect)) + ") holder base and sacrifice no longer reset PP";
+        elements.smt5.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[4]) +"</span><br><br>^(1 + sacrifice / " + abb(BigNumber('1e0').div(player_nosave.sm5_effect)) + ") holder base and sacrifice no longer reset PP";
     },
     updateSM6()
     {
-        elements.smt6.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[5]) +"</span><br><br>Holder upgrade 1 effect is now " + abb(player.sm6_effect) + " and keep holder upgrades on sacrififce, automatically buy them";
+        elements.smt6.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[5]) +"</span><br><br>Holder upgrade 1 effect is now " + abb(player_nosave.sm6_effect) + " and keep holder upgrades on sacrififce, automatically buy them";
     },
     updateSM7()
     {
-        elements.smt7.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[6]) +"</span><br><br>^" + abb(player.sm7_effect) + " PP and keep prestige upgrades on sacrifice, automatically buy them";
+        elements.smt7.innerHTML = "<span style='font-size: 25px;'>Sacrifice "+ abbi(sm_requirements[6]) +"</span><br><br>^" + abb(player_nosave.sm7_effect) + " PP and keep prestige upgrades on sacrifice, automatically buy them";
     },
     updateShows()
     {     
@@ -563,6 +577,10 @@ document.addEventListener("DOMContentLoaded", function() {
         player = load();
     }
 
+    console.log(player);
+    player_nosave.updateXp();
+    currencies.setXpToNextLevel();
+
     elements = {
         next: document.getElementById("next"),
         level: document.getElementById("level"),
@@ -623,6 +641,8 @@ document.addEventListener("DOMContentLoaded", function() {
         level_in: 0,
     }
 
+    
+
     updates.updateLevelNumberText();
     updates.updateLevelText();
     updates.updateHolderUpg1();
@@ -648,9 +668,6 @@ document.addEventListener("DOMContentLoaded", function() {
     updates.updateSM7();
 
     updates.updateShows();
-
-    currencies.setXpToNextLevel();
-
     
 
     elements.holder_div.addEventListener("mousedown", function() 
@@ -681,6 +698,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     //document.addEventListener("focusout", function() { events.isHolderHeld = false; })
 
+    
     let buy_hu1 = function() 
     { 
         if (getComputedStyle(elements.holder_upg1_div).display != "none")
@@ -694,6 +712,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     player.upg1_tm = player.upg1_tm.plus(BigNumber('1e1').topow(l10));
                 }
             }
+            player_nosave.updateXp();
             updates.updateHolderUpg1();
         }
     }
@@ -811,11 +830,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 
-    
+    new ResizeObserver(function()
+    {
+        
+    }).observe(elements.level_in);
 
+    console.log(currencies.getSacrificeRequirement());
 
     function update()
     {
+        setFPS();
+        
         sizes.level = elements.level.offsetWidth - getComputedStyle(elements.level).borderTopWidth.slice(0, -2) * 2;
         sizes.level_in = elements.level_in.offsetWidth;
 
@@ -848,20 +873,21 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        player.xp = player.xp.plus(currencies.getXp());
-        if (player.xp.gte(player.level_exp) && elements.level_in.style.width == "100%")
+        player.xp = player.xp.plus(player_nosave.xp_var);
+
+        if (player.xp.gte(player_nosave.level_exp) && elements.level_in.style.width == "100%")
         {
+            console.log('yes');
             let l10 = 0;
             while (player.xp.ge(currencies.setXpToNextLevel(player.level.plus(BigNumber('1e1').topow(l10 + 1)).minus(BigNumber('1e0')))))++l10;++l10;
             while (--l10 + 1)
             {
                 while(player.xp.gte(currencies.setXpToNextLevel(player.level.plus(BigNumber('1e1').topow(l10)).minus(BigNumber('1e0')))))
                 {
-                    player.xp = player.xp.minus(player.level_exp);
-                    player.level = player.level.plus(BigNumber('1e1').topow(l10));
+                    player.xp = player.xp.minus(player_nosave.level_exp);
+                    player_nosave.setLevel(player.level.plus(BigNumber('1e1').topow(l10)));
                 }
             }
-            currencies.setXpToNextLevel();
 
             if (player.level.gte(consts.holder))
             {
@@ -889,6 +915,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 updates.updateShows();
             }
             
+            player.xp = player.xp.plus(player_nosave.xp_var);
 
             elements.level_in.classList.add("notransition");
             elements.level_in.style.width = "0px";
@@ -902,12 +929,16 @@ document.addEventListener("DOMContentLoaded", function() {
             
         }
 
-        elements.level_in.style.transition = setting.update_time_s.toNumber() + "s linear";
-        elements.level_in.style.width = Math.max(Math.min(player.xp.div(player.level_exp).times(BigNumber('1e2')).toNumber(), 100), 0) + "%";
+        elements.level_in.style.transition = getLoopInterval() + "ms linear";
+        elements.level_in.style.width = Math.max(Math.min(player.xp.div(player_nosave.level_exp).times(BigNumber('1e2')).toNumber(), 100), 0) + "%";
 
         updates.updateLevelText();
 
-        if (events.isHolderHeld) { player.holder_progress = player.holder_progress.plus(currencies.getHolderProgress()); }
+        if (events.isHolderHeld) 
+        { 
+            player.holder_progress = player.holder_progress.plus(currencies.getHolderProgress());
+            player_nosave.updateXp();
+        }
 
         if (Date.now() - player.last_save >= setting.auto_save * 1e3)
         {
@@ -916,13 +947,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    const loop = function()
-    {
-        update();
-        setTimeout(loop, setting.update_time_s.toNumber() * 1e3);
-    }
-
-    loop();
+    setInterval(update, getLoopInterval());
 });
 
 
@@ -975,13 +1000,16 @@ function abbi(num) { return abb(num, undefined, false); }
 
 function save()
 {
-    localStorage.setItem('Data', JSON.stringify(player));
+    if (setting.save)
+    {
+        localStorage.setItem('Data', JSON.stringify(player));
+    }
 }
 function load()
 {
     let data = localStorage.getItem('Data');
     data = JSON.parse(data);
-    for (var p in data)
+    for (let p in data)
     {
         if (data.hasOwnProperty(p))
         {
@@ -996,7 +1024,7 @@ function load()
             {
                 for (let i = 0; i < data[p].length; ++i)
                 {
-                    for (var j in data[p][i])
+                    for (let j in data[p][i])
                     {
                         if (data[p][i][j].includes('e+') || data[p][i][j].includes('e-'))
                         {
@@ -1009,3 +1037,21 @@ function load()
     }
     return data;
 }
+
+function setFPS(set)
+{
+    let thisLoop = new Date();
+    let fps = 1e3 / (thisLoop - player_nosave.lastLoop);
+    if (set) player_nosave.lastLoop = thisLoop;
+    thisLoop = undefined; // it's manually deleting, right?
+    return fps;
+}
+
+function getLoopIntervalBN()
+{
+    return setting.update_time_s.times(BigNumber('1e3')).div((
+        setFPS(false) == 0 ? BigNumber(setFPS()) : BigNumber('1e0').times(BigNumber('6e1'))));
+}
+function intervalS() { return getLoopIntervalBN().div(BigNumber('1e3')); }
+
+function getLoopInterval() { return getLoopIntervalBN().toNumber(); }

@@ -27,6 +27,7 @@ div {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
 }
 
 div.bar {
@@ -38,6 +39,7 @@ div.bar {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    background-color: black;
 }
 
 div.bar_in {
@@ -75,6 +77,7 @@ div#holder_div
     transition: 100ms linear;
     transition-property: background-color;
     display: none;
+    background-color: black;
 }
 
 div#holder_div:hover,
@@ -104,6 +107,7 @@ div.holder_upgrade
     transition: 100ms linear;
     transition-property: background-color;
     display: none;
+    background-color: black;
 }
 
 div#prestige_div
@@ -116,6 +120,7 @@ div#prestige_div
     transition: 100ms linear;
     transition-property: background-color;
     display: none;
+    background-color: black;
 }
 div#prestige_div:hover,
 div.prestige_upgrade:hover
@@ -152,6 +157,7 @@ div.prestige_upgrade
     border-radius: 15px;
     transition: 100ms linear;
     transition-property: background-color;
+    background-color: black;
 }
 p.prestige_upgrade_text
 {
@@ -166,6 +172,7 @@ div#prestige_upgrades_div
     border: 2px solid red;
     border-radius: 15px;
     display: none;
+    background-color: black;
 }
 
 div#sacrifice_div
@@ -178,6 +185,7 @@ div#sacrifice_div
     transition: 100ms linear;
     transition-property: background-color;
     display: none;
+    background-color: black;
 }
 div#sacrifice_div:hover,
 div.sacrifice_milestone_div:hover
@@ -209,17 +217,17 @@ div#sacrifice_milestones_div
     border-radius: 15px;
     overflow: hidden;
     display: none;
+    background-color: black;
 }
 
-::-webkit-scrollbar {
+div.s::-webkit-scrollbar {
     background: transparent;
     border-left: 2px solid rgb(127, 0, 255);
     width: 10px;
 }
 
-::-webkit-scrollbar-thumb {
+div.s::-webkit-scrollbar-thumb {
     background: rgb(127, 0, 255);
-    
 }
 
 div.sacrifice_milestone_div
@@ -232,6 +240,7 @@ div.sacrifice_milestone_div
     position: static;
     transition: 100ms linear;
     transition-property: background-color;
+    background-color: black;
 }
 
 p.sacrifice_milestone_text
