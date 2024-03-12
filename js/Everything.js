@@ -577,7 +577,6 @@ document.addEventListener("DOMContentLoaded", function() {
         player = load();
     }
 
-    console.log(player);
     player_nosave.updateXp();
     currencies.setXpToNextLevel();
 
@@ -875,7 +874,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (player.xp.gte(player_nosave.level_exp) && elements.level_in.style.width == "100%")
         {
-            console.log('yes');
             let l10 = 0;
             while (player.xp.ge(currencies.setXpToNextLevel(player.level.plus(BigNumber('1e1').topow(l10 + 1)).minus(BigNumber('1e0')))))++l10;++l10;
             while (--l10 + 1)
