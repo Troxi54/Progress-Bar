@@ -5,6 +5,10 @@
     user-select: none;
 }
 
+html {
+    overflow: auto;
+}
+
 p {
     white-space: nowrap;
     background-color: transparent;
@@ -108,8 +112,8 @@ div.holder_upgrade
 div#prestige_div
 {
     width: 100%;
+    top: 10%;
     aspect-ratio: 5 / 3;
-    transform: translateY(-50%);
     border: 2px solid red;
     border-radius: 15px;
     transition: 100ms linear;
@@ -139,7 +143,7 @@ p#prestige_number
     position: absolute;
     font-size: 25px;
     color: rgb(255, 0, 0);
-    top: -90%;
+    top: 0%;
 }
 
 div.prestige_upgrade
@@ -172,9 +176,9 @@ div#prestige_upgrades_div
 
 div#sacrifice_div
 {
+    top: 10%;
     width: 100%;
     aspect-ratio: 5 / 3;
-    transform: translateY(-50%);
     border: 2px solid rgb(127, 0, 255);
     border-radius: 15px;
     transition: 100ms linear;
@@ -201,7 +205,7 @@ p#sacrifice_number
     position: absolute;
     font-size: 25px;
     color: rgb(127, 0, 255);
-    top: -90%;
+    top: 0%;
 }
 div#sacrifice_milestones_div
 {
