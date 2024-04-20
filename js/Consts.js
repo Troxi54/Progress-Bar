@@ -1,4 +1,6 @@
-BigNumber.set({ EXPONENTIAL_AT: 0,
+BigNumber.set({ 
+    POW_PRECISION: 12,
+    EXPONENTIAL_AT: 0,
     RANGE: Math.floor(76081 ** 1.5)});
 
 let elements;

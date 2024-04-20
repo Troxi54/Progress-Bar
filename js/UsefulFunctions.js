@@ -45,39 +45,43 @@ function save()
 {
     if (setting.save)
     {
-        localStorage.setItem('Data', JSON.stringify(player));
+        localStorage.setItem('Progress bar', btoa(JSON.stringify(player)));
     }
 }
 function load()
 {
-    let data = localStorage.getItem('Data');
-    data = JSON.parse(data);
-    for (let p in data)
+    let data = localStorage.getItem('Progress bar');
+    if (data)
     {
-        if (data.hasOwnProperty(p))
+        data = JSON.parse(atob(data));
+        for (let p in data)
         {
-            if (typeof data[p] === 'string')
+            if (data.hasOwnProperty(p))
             {
-                if (data[p].includes('e+') || data[p].includes('e-'))
+                if (typeof data[p] === 'string')
                 {
-                    data[p] = BigNumber(data[p]);
-                }
-            }
-            else if (typeof data[p] === 'object')
-            {
-                for (let i = 0; i < data[p].length; ++i)
-                {
-                    for (let j in data[p][i])
+                    if (data[p].includes('e+') || data[p].includes('e-'))
                     {
-                        if (data[p][i][j].includes('e+') || data[p][i][j].includes('e-'))
+                        data[p] = BigNumber(data[p]);
+                    }
+                }
+                else if (typeof data[p] === 'object')
+                {
+                    for (let i = 0; i < data[p].length; ++i)
+                    {
+                        for (let j in data[p][i])
                         {
-                            data[p][i][j] = BigNumber(data[p][i][j]);
+                            if (data[p][i][j].includes('e+') || data[p][i][j].includes('e-'))
+                            {
+                                data[p][i][j] = BigNumber(data[p][i][j]);
+                            }
                         }
                     }
                 }
             }
         }
     }
+    
     return data;
 }
 

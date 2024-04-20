@@ -74,7 +74,7 @@ const updates = {
     },
     updatePrestigeNumber()
     {
-        elements.prestige_number.innerHTML = player.prestige_points.gt(BigNumber('0e0')) ? "Prestige points: " + abb(player.prestige_points) + "<span style='color: rgb(130, 0, 0)'> = 1/" + abb(player_nosave.prestige_effect_var, 2) + "x time.</span>" : "";
+        elements.prestige_number.innerHTML = player.prestige_points.gt(BigNumber('0e0')) ? "Prestige points: " + abb(player.prestige_points) + "</span><span style='color: rgb(130, 0, 0)'> = 1/" + abb(player_nosave.prestige_effect_var, 2) + "x time.</span>" : "";
     },
     updatePrestigeUpgrade1()
     {

@@ -36,7 +36,7 @@ let player = {
 }
 
 const player_nosave = {
-    xp_multiplier: BigNumber('1e0'),
+    xp_multiplier: BigNumber('1e100'),
 
     level_exp: BigNumber(''),
     setLevel(num) { player.level = num; currencies.setXpToNextLevel(); },

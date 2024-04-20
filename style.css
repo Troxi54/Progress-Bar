@@ -3,6 +3,8 @@
     font-family: sans-serif;
     text-align: center;
     user-select: none;
+    touch-action: manipulation;
+    outline: 0;
 }
 
 html {
@@ -29,7 +31,7 @@ div {
     background-color: transparent;
 }
 
-div.bar {
+.bar {
     background-color: transparent;
     border: 2px solid white;
     border-radius: 10px;
@@ -41,7 +43,7 @@ div.bar {
     background-color: black;
 }
 
-div.bar_in {
+.bar_in {
     left: -1px;
     background-color: white;
     border: 2px solid white;
@@ -51,20 +53,20 @@ div.bar_in {
     transition: none;
 }
 
-p#level_text
+#level_text
 {
     font-size: 30px;
     z-index: 1;
 }
 
-p#level_number
+#level_number
 {
     font-size: 50px;
     color: white;
     top: 30%;
 }
 
-div#holder_div
+#holder_div
 {
     width: 244px;
     aspect-ratio: 1 / 1;
@@ -79,23 +81,23 @@ div#holder_div
     background-color: black;
 }
 
-div#holder_div:hover,
-div.holder_upgrade:hover
+#holder_div:hover,
+.holder_upgrade:hover
 {
     background-color: rgb(50, 50, 50);
 }
-div#holder_div:active,
-div.holder_upgrade:active
+#holder_div:active,
+.holder_upgrade:active
 {
     background-color: rgb(255, 255, 255);
 }
-p#holder_info
+#holder_info
 {
     white-space: wrap;
     font-size: 20px;
 }
 
-div.holder_upgrade
+.holder_upgrade
 {
     width: 94px;
     aspect-ratio: 1 / 1;
@@ -109,7 +111,7 @@ div.holder_upgrade
     background-color: black;
 }
 
-div#prestige_div
+#prestige_div
 {
     width: 100%;
     top: 10%;
@@ -121,24 +123,24 @@ div#prestige_div
     display: none;
     background-color: black;
 }
-div#prestige_div:hover,
-div.prestige_upgrade:hover
+#prestige_div:hover,
+.prestige_upgrade:hover
 {
     background-color: rgb(50, 0, 0);
 }
-div#prestige_div:active,
-div.prestige_upgrade:active
+#prestige_div:active,
+.prestige_upgrade:active
 {
     background-color: rgb(255, 0, 0);
 }
 
-p#prestige_info
+#prestige_info
 {
     font-size: 15px;
     color: rgb(130, 0, 0);
 }
 
-p#prestige_number
+#prestige_number
 {
     position: absolute;
     font-size: 25px;
@@ -146,7 +148,7 @@ p#prestige_number
     top: 0%;
 }
 
-div.prestige_upgrade
+.prestige_upgrade
 {
     position: absolute;
     width: 94px;
@@ -158,12 +160,12 @@ div.prestige_upgrade
     transition-property: background-color;
     background-color: black;
 }
-p.prestige_upgrade_text
+.prestige_upgrade_text
 {
     font-size: .60em;
     color:rgb(130, 0, 0);
 }
-div#prestige_upgrades_div
+#prestige_upgrades_div
 {
     width: 235px;
     aspect-ratio: 1 / 1.5;
@@ -174,7 +176,7 @@ div#prestige_upgrades_div
     background-color: black;
 }
 
-div#sacrifice_div
+#sacrifice_div
 {
     top: 10%;
     width: 100%;
@@ -186,28 +188,28 @@ div#sacrifice_div
     display: none;
     background-color: black;
 }
-div#sacrifice_div:hover,
-div.sacrifice_milestone_div:hover
+#sacrifice_div:hover,
+.sacrifice_milestone_div:hover
 {
     background-color: rgb(25, 0, 50);
 }
-div#sacrifice_div:active
+#sacrifice_div:active
 {
     background-color: rgb(127, 0, 255);
 }
-p#sacrifice_info
+#sacrifice_info
 {
     font-size: 15px;
     color: rgb(65, 0, 130);
 }
-p#sacrifice_number
+#sacrifice_number
 {
     position: absolute;
     font-size: 25px;
     color: rgb(127, 0, 255);
     top: 0%;
 }
-div#sacrifice_milestones_div
+#sacrifice_milestones_div
 {
     width: 235px;
     aspect-ratio: 1 / 1.5;
@@ -219,17 +221,17 @@ div#sacrifice_milestones_div
     background-color: black;
 }
 
-div.s::-webkit-scrollbar {
+.s::-webkit-scrollbar {
     background: transparent;
     border-left: 2px solid rgb(127, 0, 255);
     width: 10px;
 }
 
-div.s::-webkit-scrollbar-thumb {
+.s::-webkit-scrollbar-thumb {
     background: rgb(127, 0, 255);
 }
 
-div.sacrifice_milestone_div
+.sacrifice_milestone_div
 {
     width: 100%;
     aspect-ratio: 5 / 3;
@@ -242,7 +244,7 @@ div.sacrifice_milestone_div
     background-color: black;
 }
 
-p.sacrifice_milestone_text
+.sacrifice_milestone_text
 {
     font-size: 15px;
     color: rgb(65, 0, 130);
